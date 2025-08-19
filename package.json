@@ -1,0 +1,17 @@
+{
+  "name": "com.darmuh.MoreEyesSDK",
+  "version": "1.0.0",
+  "displayName": "MoreEyesSDK",
+  "description": "Unity editor tools for creating MoreEyes mods for R.E.P.O.",
+  "unity": "2022.3",
+  "unityRelease": "21f1",
+  "documentationUrl": "https://github.com/darmuh/MoreEyesSDK/wiki",
+  "licensesUrl": "https://choosealicense.com/licenses/mit/",
+  "dependencies": {
+  },
+  "author": {
+    "name": "darmuh",
+    "email": "",
+    "url": "https://github.com/darmuh/MoreEyesSDK"
+  }
+}
