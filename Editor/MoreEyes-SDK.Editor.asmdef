@@ -7,7 +7,6 @@
         "UnityEditor.UIElementsModule",
 		"UnityEngine"
     ],
-    ],
     "includePlatforms": ["Editor"],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
