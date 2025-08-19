@@ -20,7 +20,6 @@ public class MoreEyesEditorMenu : EditorWindow
     private static TextField modName;
     private static TextField modVer;
     private static TextField modAuthor;
-    private static string resultPath;
 
     // Your serialized data
     private List<GameObject> gameObjectsList = new();
@@ -91,10 +90,6 @@ public class MoreEyesEditorMenu : EditorWindow
 
         string modAssetName = $"{eyesMod.Name}.asset";
         var currentPath = GetActiveWindowPath();
-        //resultPath = EditorUtility.OpenFolderPanel("Asset Path", "", "Assets");
-        //Debug.Log(resultPath);
-        //resultPath = FileUtil.GetProjectRelativePath(resultPath);
-        //Debug.Log(resultPath);
         string modPath = Path.Combine(currentPath, modAssetName);
 
         AssetDatabase.CreateAsset(eyesMod, modPath);
@@ -111,9 +106,10 @@ public class MoreEyesEditorMenu : EditorWindow
         {
             string assetPath = AssetDatabase.GUIDToAssetPath(guid);
             mods.Add(AssetDatabase.LoadAssetAtPath(assetPath, typeof(MoreEyesMod)) as MoreEyesMod);
-        };
+        }
+        ;
 
-        if(mods.Count == 0)
+        if (mods.Count == 0)
         {
             Debug.LogWarning("No existing Mod assets found!");
         }
@@ -152,16 +148,16 @@ public class MoreEyesEditorMenu : EditorWindow
 
         var file = BuildPipeline.BuildAssetBundles(buildParams);
 
-        foreach(var fileName in file.GetAllAssetBundles())
+        foreach (var fileName in file.GetAllAssetBundles())
         {
             string finalBundlePath = Path.Combine(getPath, fileName + ".eyesbundle");
-            if(File.Exists(finalBundlePath))
+            if (File.Exists(finalBundlePath))
                 File.Delete(finalBundlePath);
 
             File.Copy(Path.Combine(bundles, fileName), finalBundlePath);
             Debug.Log($"Eyes Bundle saved to {finalBundlePath}");
         }
-        
+
 
     }
 
