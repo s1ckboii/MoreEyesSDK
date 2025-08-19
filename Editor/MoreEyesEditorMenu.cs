@@ -142,7 +142,7 @@ public class MoreEyesEditorMenu : EditorWindow
         {
             bundleDefinitions = bundlebuilds.ToArray(),
             outputPath = bundles,
-            options = BuildAssetBundleOptions.UncompressedAssetBundle,
+            options = BuildAssetBundleOptions.ChunkBasedCompression,
             targetPlatform = BuildTarget.StandaloneWindows64
         };
 
