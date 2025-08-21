@@ -90,12 +90,12 @@ public class MoreEyesEditorMenu : EditorWindow
         foreach (var mod in mods)
         {
             string assetPath = AssetDatabase.GetAssetPath(mod);
-            AssetImporter.GetAtPath(assetPath).assetBundleName = mod.name + ".eyesbundle";
+            AssetImporter.GetAtPath(assetPath).assetBundleName = mod.name + ".eyes";
 
             foreach (var prefab in mod.Prefabs)
             {
                 string prefabPath = AssetDatabase.GetAssetPath(prefab);
-                AssetImporter.GetAtPath(prefabPath).assetBundleName = mod.name + ".eyesbundle";
+                AssetImporter.GetAtPath(prefabPath).assetBundleName = mod.name + ".eyes";
             }
         }
 
