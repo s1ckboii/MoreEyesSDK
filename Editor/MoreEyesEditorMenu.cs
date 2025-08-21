@@ -21,11 +21,6 @@ public class MoreEyesEditorMenu : EditorWindow
     private static TextField modVer;
     private static TextField modAuthor;
 
-    // Your serialized data
-    private List<GameObject> gameObjectsList = new();
-    private SerializedObject serializedObject;
-    private SerializedProperty gameObjectsProperty;
-
 
     public void CreateGUI()
     {
@@ -40,36 +35,6 @@ public class MoreEyesEditorMenu : EditorWindow
         root.Add(modVer);
         modAuthor = new("Mod Author", 64, false, false, '*');
         root.Add(modAuthor);
-
-        // Initialize SerializedObject (if using SerializedProperty)
-        serializedObject = new SerializedObject(this);
-        gameObjectsProperty = serializedObject.FindProperty("gameObjectsList");
-
-        // Array container (scrollable)
-        ListView listView = new()
-        {
-            makeItem = () => new ObjectField(), // Each item is a GameObject field
-            bindItem = (element, index) =>
-            {
-                var field = (ObjectField)element;
-                field.objectType = typeof(GameObject);
-                field.value = gameObjectsList[index];
-                field.RegisterValueChangedCallback((evt) =>
-                {
-                    gameObjectsList[index] = (GameObject)evt.newValue;
-                });
-            },
-            itemsSource = gameObjectsList,
-            fixedItemHeight = 22,
-            showAddRemoveFooter = true // Adds "+" and "-" buttons
-        };
-
-        // Add to root
-        root.Add(listView);
-
-        // Optional: Save changes automatically
-        listView.itemsAdded += (indices) => serializedObject.ApplyModifiedProperties();
-        listView.itemsRemoved += (indices) => serializedObject.ApplyModifiedProperties();
 
         // Create button
         Button submit = new(CreateMod)
@@ -86,7 +51,6 @@ public class MoreEyesEditorMenu : EditorWindow
         eyesMod.SetName(modName.text);
         eyesMod.SetAuthor(modAuthor.text);
         eyesMod.SetVersion(modVer.text);
-        eyesMod.SetPrefabs(gameObjectsList);
 
         string modAssetName = $"{eyesMod.Name}.asset";
         var currentPath = GetActiveWindowPath();
