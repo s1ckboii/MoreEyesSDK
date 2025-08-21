@@ -71,36 +71,35 @@ public class MoreEyesEditorMenu : EditorWindow
     {
         var guids = AssetDatabase.FindAssets("t:MoreEyesMod");
         List<MoreEyesMod> mods = new();
+
         foreach (var guid in guids)
         {
             string assetPath = AssetDatabase.GUIDToAssetPath(guid);
-            mods.Add(AssetDatabase.LoadAssetAtPath<MoreEyesMod>(assetPath);
+            mods.Add(AssetDatabase.LoadAssetAtPath<MoreEyesMod>(assetPath));
         }
 
-        if(mods.Count == 0)
+        if (mods.Count == 0)
         {
             Debug.LogWarning("No existing Mod assets found!");
             return;
         }
 
-        string getPath = EditorUtility.SaveFolderPanel($"EyesBundles Location", "", "");
-        if (string.IsNullOrEmpty(getPath))
-            return;
+        string outputFolder = EditorUtility.SaveFolderPanel("EyesBundles Location", "", "");
+        if (string.IsNullOrEmpty(outputFolder)) return;
 
         foreach (var mod in mods)
         {
-            string assetPath = AssetDatabase.GetAssetPath(mod);
-            AssetImporter.GetAtPath(assetPath).assetBundleName = mod.name + ".eyes";
+            // Assign asset bundle names
+            string modBundleName = mod.name + ".eyesbundle";
+            AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(mod)).assetBundleName = modBundleName;
 
             foreach (var prefab in mod.Prefabs)
             {
-                string prefabPath = AssetDatabase.GetAssetPath(prefab);
-                AssetImporter.GetAtPath(prefabPath).assetBundleName = mod.name + ".eyes";
+                AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(prefab)).assetBundleName = modBundleName;
             }
         }
-
         BuildPipeline.BuildAssetBundles(outputFolder, BuildAssetBundleOptions.ChunkBasedCompression, BuildTarget.StandaloneWindows64);
-        Debug.Log($"Eyes Bundle saved to {outputFolder}");
+        Debug.Log($"Eyes Bundles saved to {outputFolder}");
     }
 }
 
