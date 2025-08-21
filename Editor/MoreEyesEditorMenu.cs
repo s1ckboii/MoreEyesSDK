@@ -17,14 +17,9 @@ public class MoreEyesEditorMenu : EditorWindow
         window.titleContent = new GUIContent("Create MoreEyes Mod");
     }
 
-    private static TextField modName;
-    private static TextField modVer;
-    private static TextField modAuthor;
-
-    // Your serialized data
-    private List<GameObject> gameObjectsList = new();
-    private SerializedObject serializedObject;
-    private SerializedProperty gameObjectsProperty;
+    private TextField modName;
+    private TextField modVer;
+    private TextField modAuthor;
 
 
     public void CreateGUI()
@@ -41,36 +36,6 @@ public class MoreEyesEditorMenu : EditorWindow
         modAuthor = new("Mod Author", 64, false, false, '*');
         root.Add(modAuthor);
 
-        // Initialize SerializedObject (if using SerializedProperty)
-        serializedObject = new SerializedObject(this);
-        gameObjectsProperty = serializedObject.FindProperty("gameObjectsList");
-
-        // Array container (scrollable)
-        ListView listView = new()
-        {
-            makeItem = () => new ObjectField(), // Each item is a GameObject field
-            bindItem = (element, index) =>
-            {
-                var field = (ObjectField)element;
-                field.objectType = typeof(GameObject);
-                field.value = gameObjectsList[index];
-                field.RegisterValueChangedCallback((evt) =>
-                {
-                    gameObjectsList[index] = (GameObject)evt.newValue;
-                });
-            },
-            itemsSource = gameObjectsList,
-            fixedItemHeight = 22,
-            showAddRemoveFooter = true // Adds "+" and "-" buttons
-        };
-
-        // Add to root
-        root.Add(listView);
-
-        // Optional: Save changes automatically
-        listView.itemsAdded += (indices) => serializedObject.ApplyModifiedProperties();
-        listView.itemsRemoved += (indices) => serializedObject.ApplyModifiedProperties();
-
         // Create button
         Button submit = new(CreateMod)
         {
@@ -86,11 +51,15 @@ public class MoreEyesEditorMenu : EditorWindow
         eyesMod.SetName(modName.text);
         eyesMod.SetAuthor(modAuthor.text);
         eyesMod.SetVersion(modVer.text);
-        eyesMod.SetPrefabs(gameObjectsList);
 
         string modAssetName = $"{eyesMod.Name}.asset";
-        var currentPath = GetActiveWindowPath();
+        string currentPath = GetActiveWindowPath();
         string modPath = Path.Combine(currentPath, modAssetName);
+        if (File.Exists(modPath))
+        {
+            if (!EditorUtility.DisplayDialog("Overwrite Asset?", $"The asset {modAssetName} already exists. Overwrite?", "Yes", "No"))
+                return;
+        }
 
         AssetDatabase.CreateAsset(eyesMod, modPath);
         var window = GetWindow<MoreEyesEditorMenu>();
@@ -105,68 +74,42 @@ public class MoreEyesEditorMenu : EditorWindow
         foreach (var guid in guids)
         {
             string assetPath = AssetDatabase.GUIDToAssetPath(guid);
-            mods.Add(AssetDatabase.LoadAssetAtPath(assetPath, typeof(MoreEyesMod)) as MoreEyesMod);
+            mods.Add(AssetDatabase.LoadAssetAtPath<MoreEyesMod>(assetPath);
         }
-        ;
 
         if (mods.Count == 0)
         {
             Debug.LogWarning("No existing Mod assets found!");
+            return;
         }
 
         string getPath = EditorUtility.SaveFolderPanel($"EyesBundles Location", "", "");
-        List<AssetBundleBuild> bundlebuilds = new();
-        string bundles = "Assets/bundleFiles";
-        if (!AssetDatabase.IsValidFolder(bundles))
-            AssetDatabase.CreateFolder("Assets", "bundleFiles");
-
+        if (string.IsNullOrEmpty(getPath))
+            return;
 
         foreach (var mod in mods)
         {
-            List<string> assets = new()
-            {
-                AssetDatabase.GetAssetPath(mod)
-            };
+            string assetPath = AssetDatabase.GetAssetPath(mod);
+            AssetImporter.GetAtPath(assetPath).assetBundleName = mod.name + ".eyesbundle";
+
             foreach (var prefab in mod.Prefabs)
-                assets.Add(AssetDatabase.GetAssetPath(prefab));
-
-
-            bundlebuilds.Add(new AssetBundleBuild()
             {
-                assetBundleName = mod.name,
-                assetNames = assets.ToArray(),
-            });
+                string prefabPath = AssetDatabase.GetAssetPath(prefab);
+                AssetImporter.GetAtPath(prefabPath).assetBundleName = mod.name + ".eyesbundle";
+            }
         }
 
-        var buildParams = new BuildAssetBundlesParameters()
-        {
-            bundleDefinitions = bundlebuilds.ToArray(),
-            outputPath = bundles,
-            options = BuildAssetBundleOptions.ChunkBasedCompression,
-            targetPlatform = BuildTarget.StandaloneWindows64
-        };
-
-        var file = BuildPipeline.BuildAssetBundles(buildParams);
-
-        foreach (var fileName in file.GetAllAssetBundles())
-        {
-            string finalBundlePath = Path.Combine(getPath, fileName + ".eyesbundle");
-            if (File.Exists(finalBundlePath))
-                File.Delete(finalBundlePath);
-
-            File.Copy(Path.Combine(bundles, fileName), finalBundlePath);
-            Debug.Log($"Eyes Bundle saved to {finalBundlePath}");
-        }
-
-
+        BuildPipeline.BuildAssetBundles(outputFolder, BuildAssetBundleOptions.ChunkBasedCompression, BuildTarget.StandaloneWindows64);
+        Debug.Log($"Eyes Bundle saved to {outputFolder}");
     }
+}
 
-    //https://discussions.unity.com/t/how-to-get-path-from-the-current-opened-folder-in-the-project-window-in-unity-editor/226209
-    private static string GetActiveWindowPath()
-    {
-        Type projectWindowUtilType = typeof(ProjectWindowUtil);
-        MethodInfo getActiveFolderPath = projectWindowUtilType.GetMethod("GetActiveFolderPath", BindingFlags.Static | BindingFlags.NonPublic);
-        object obj = getActiveFolderPath.Invoke(null, new object[0]);
-        return obj.ToString();
-    }
+//https://discussions.unity.com/t/how-to-get-path-from-the-current-opened-folder-in-the-project-window-in-unity-editor/226209
+private static string GetActiveWindowPath()
+{
+    Type projectWindowUtilType = typeof(ProjectWindowUtil);
+    MethodInfo getActiveFolderPath = projectWindowUtilType.GetMethod("GetActiveFolderPath", BindingFlags.Static | BindingFlags.NonPublic);
+    object obj = getActiveFolderPath.Invoke(null, new object[0]);
+    return obj.ToString();
+}
 }
