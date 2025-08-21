@@ -77,7 +77,7 @@ public class MoreEyesEditorMenu : EditorWindow
             mods.Add(AssetDatabase.LoadAssetAtPath<MoreEyesMod>(assetPath);
         }
 
-        if (mods.Count == 0)
+        if(mods.Count == 0)
         {
             Debug.LogWarning("No existing Mod assets found!");
             return;

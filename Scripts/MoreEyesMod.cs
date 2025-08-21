@@ -1,4 +1,4 @@
-// Slightly modified version of this scriptable object provided by REPOLib-SDK
+﻿// Slightly modified version of this scriptable object provided by REPOLib-SDK
 // https://github.com/ZehsTeam/REPOLib/blob/main/REPOLib/Objects/Sdk/Mod.cs
 using System.Collections.Generic;
 using UnityEngine;
@@ -61,6 +61,10 @@ namespace MoreEyes.SDK
         /// </summary>
         /// <param name="value"></param>
         public void SetAuthor(string value) => _author = string.IsNullOrEmpty(value) ? "Unknown" : value;
+        /// <summary>
+        /// Used to set version of mod, public for editor script ONLY
+        /// </summary>
+        /// <param name="value"></param>
         /// <summary>
         /// Used to set version of mod, public for editor script ONLY
         /// </summary>

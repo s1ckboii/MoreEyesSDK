@@ -2,17 +2,19 @@
     "name": "MoreEyes-SDK.Editor",
     "rootNamespace": "",
     "references": [
-        "GUID:3ebbd442de64b3147aa4fb7ba48756bf",
         "UnityEditor",
         "UnityEditor.UIElementsModule",
-		"UnityEngine"
+        "UnityEngine",
+        "MoreEyes"
     ],
-    "includePlatforms": ["Editor"],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
-    "autoReferenced": false,
+    "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],
     "noEngineReferences": false
