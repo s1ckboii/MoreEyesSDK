@@ -7,6 +7,7 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
+
 public class MoreEyesEditorMenu : EditorWindow
 {
     //Create MoreEyes Mod
@@ -17,9 +18,9 @@ public class MoreEyesEditorMenu : EditorWindow
         window.titleContent = new GUIContent("Create MoreEyes Mod");
     }
 
-    private TextField modName;
-    private TextField modVer;
-    private TextField modAuthor;
+    private static TextField modName;
+    private static TextField modVer;
+    private static TextField modAuthor;
 
 
     public void CreateGUI()
