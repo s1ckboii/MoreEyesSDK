@@ -7,7 +7,6 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
-
 public class MoreEyesEditorMenu : EditorWindow
 {
     //Create MoreEyes Mod
@@ -54,13 +53,8 @@ public class MoreEyesEditorMenu : EditorWindow
         eyesMod.SetVersion(modVer.text);
 
         string modAssetName = $"{eyesMod.Name}.asset";
-        string currentPath = GetActiveWindowPath();
+        var currentPath = GetActiveWindowPath();
         string modPath = Path.Combine(currentPath, modAssetName);
-        if (File.Exists(modPath))
-        {
-            if (!EditorUtility.DisplayDialog("Overwrite Asset?", $"The asset {modAssetName} already exists. Overwrite?", "Yes", "No"))
-                return;
-        }
 
         AssetDatabase.CreateAsset(eyesMod, modPath);
         var window = GetWindow<MoreEyesEditorMenu>();
@@ -72,43 +66,74 @@ public class MoreEyesEditorMenu : EditorWindow
     {
         var guids = AssetDatabase.FindAssets("t:MoreEyesMod");
         List<MoreEyesMod> mods = new();
-
         foreach (var guid in guids)
         {
             string assetPath = AssetDatabase.GUIDToAssetPath(guid);
-            mods.Add(AssetDatabase.LoadAssetAtPath<MoreEyesMod>(assetPath));
+            mods.Add(AssetDatabase.LoadAssetAtPath(assetPath, typeof(MoreEyesMod)) as MoreEyesMod);
         }
+        ;
 
         if (mods.Count == 0)
         {
             Debug.LogWarning("No existing Mod assets found!");
-            return;
         }
 
-        string outputFolder = EditorUtility.SaveFolderPanel("EyesBundles Location", "", "");
-        if (string.IsNullOrEmpty(outputFolder)) return;
+        string getPath = EditorUtility.SaveFolderPanel($"EyesBundles Location", "", "");
+        if (string.IsNullOrEmpty(getPath))
+            return;
+
+        List<AssetBundleBuild> bundlebuilds = new();
+        string bundles = "Assets/bundleFiles";
+        if (!AssetDatabase.IsValidFolder(bundles))
+            AssetDatabase.CreateFolder("Assets", "bundleFiles");
+
 
         foreach (var mod in mods)
         {
-            // Assign asset bundle names
-            string modBundleName = mod.name + ".eyesbundle";
-            AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(mod)).assetBundleName = modBundleName;
-
-            foreach (var prefab in mod.Prefabs)
+            List<string> assets = new()
             {
-                AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(prefab)).assetBundleName = modBundleName;
-            }
-        }
-        BuildPipeline.BuildAssetBundles(outputFolder, BuildAssetBundleOptions.ChunkBasedCompression, BuildTarget.StandaloneWindows64);
-        Debug.Log($"Eyes Bundles saved to {outputFolder}");
-    }
-}
+                AssetDatabase.GetAssetPath(mod)
+            };
+            foreach (var prefab in mod.Prefabs)
+                assets.Add(AssetDatabase.GetAssetPath(prefab));
 
-//https://discussions.unity.com/t/how-to-get-path-from-the-current-opened-folder-in-the-project-window-in-unity-editor/226209
-public static string GetActiveWindowPath()
-{
-    Type projectWindowUtilType = typeof(ProjectWindowUtil);
-    MethodInfo getActiveFolderPath = projectWindowUtilType.GetMethod("GetActiveFolderPath", BindingFlags.Static | BindingFlags.NonPublic);
-    object obj = getActiveFolderPath.Invoke(null, new object[0]);
-    return obj.ToString();
+
+            bundlebuilds.Add(new AssetBundleBuild()
+            {
+                assetBundleName = mod.name,
+                assetNames = assets.ToArray(),
+            });
+        }
+
+        var buildParams = new BuildAssetBundlesParameters()
+        {
+            bundleDefinitions = bundlebuilds.ToArray(),
+            outputPath = bundles,
+            options = BuildAssetBundleOptions.ChunkBasedCompression,
+            targetPlatform = BuildTarget.StandaloneWindows64
+        };
+
+        var file = BuildPipeline.BuildAssetBundles(buildParams);
+
+        foreach (var fileName in file.GetAllAssetBundles())
+        {
+            string finalBundlePath = Path.Combine(getPath, fileName + ".eyes");
+            if (File.Exists(finalBundlePath))
+                File.Delete(finalBundlePath);
+
+            File.Copy(Path.Combine(bundles, fileName), finalBundlePath);
+            Debug.Log($"Eyes Bundle saved to {Path.GetFullPath(finalBundlePath)}");
+        }
+
+
+    }
+
+    //https://discussions.unity.com/t/how-to-get-path-from-the-current-opened-folder-in-the-project-window-in-unity-editor/226209
+    private static string GetActiveWindowPath()
+    {
+        Type projectWindowUtilType = typeof(ProjectWindowUtil);
+        MethodInfo getActiveFolderPath = projectWindowUtilType.GetMethod("GetActiveFolderPath", BindingFlags.Static | BindingFlags.NonPublic);
+        object obj = getActiveFolderPath.Invoke(null, new object[0]);
+        return obj.ToString();
+    }
 }
