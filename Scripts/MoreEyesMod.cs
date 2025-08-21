@@ -55,12 +55,16 @@ namespace MoreEyes.SDK
         /// Used to set name of mod, public for editor script ONLY
         /// </summary>
         /// <param name="value"></param>
-        public void SetName(string value) => _name = value;
+        public void SetName(string value) => _name = string.IsNullOrEmpty(value) ? "UnnamedMod" : value;
         /// <summary>
         /// Used to set author of mod, public for editor script ONLY
         /// </summary>
         /// <param name="value"></param>
-        public void SetAuthor(string value) => _author = value;
+        public void SetAuthor(string value) => _author = string.IsNullOrEmpty(value) ? "Unknown" : value;
+        /// <summary>
+        /// Used to set version of mod, public for editor script ONLY
+        /// </summary>
+        /// <param name="value"></param>
         /// <summary>
         /// Used to set version of mod, public for editor script ONLY
         /// </summary>

@@ -72,7 +72,7 @@ public class MoreEyesEditorMenu : EditorWindow
             mods.Add(AssetDatabase.LoadAssetAtPath(assetPath, typeof(MoreEyesMod)) as MoreEyesMod);
         };
 
-        if(mods.Count == 0)
+        if (mods.Count == 0)
         {
             Debug.LogWarning("No existing Mod assets found!");
         }
@@ -114,17 +114,15 @@ public class MoreEyesEditorMenu : EditorWindow
 
         var file = BuildPipeline.BuildAssetBundles(buildParams);
 
-        foreach(var fileName in file.GetAllAssetBundles())
+        foreach (var fileName in file.GetAllAssetBundles())
         {
-            string finalBundlePath = Path.Combine(getPath, fileName + ".eyesbundle");
-            if(File.Exists(finalBundlePath))
+            string finalBundlePath = Path.Combine(getPath, fileName + ".eyes");
+            if (File.Exists(finalBundlePath))
                 File.Delete(finalBundlePath);
 
             File.Copy(Path.Combine(bundles, fileName), finalBundlePath);
             Debug.Log($"Eyes Bundle saved to {Path.GetFullPath(finalBundlePath)}");
         }
-        
-
     }
 
     //https://discussions.unity.com/t/how-to-get-path-from-the-current-opened-folder-in-the-project-window-in-unity-editor/226209
