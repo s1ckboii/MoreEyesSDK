@@ -105,11 +105,10 @@ public class MoreEyesEditorMenu : EditorWindow
 }
 
 //https://discussions.unity.com/t/how-to-get-path-from-the-current-opened-folder-in-the-project-window-in-unity-editor/226209
-private static string GetActiveWindowPath()
+public static string GetActiveWindowPath()
 {
     Type projectWindowUtilType = typeof(ProjectWindowUtil);
     MethodInfo getActiveFolderPath = projectWindowUtilType.GetMethod("GetActiveFolderPath", BindingFlags.Static | BindingFlags.NonPublic);
     object obj = getActiveFolderPath.Invoke(null, new object[0]);
     return obj.ToString();
-}
 }
