@@ -5,7 +5,7 @@
         "UnityEditor",
         "UnityEditor.UIElementsModule",
         "UnityEngine",
-        "MoreEyes"
+        "com.github.s1ckboii.MoreEyes"
     ],
     "includePlatforms": [
         "Editor"
