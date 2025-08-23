@@ -75,6 +75,7 @@ public class MoreEyesEditorMenu : EditorWindow
         if (mods.Count == 0)
         {
             Debug.LogWarning("No existing Mod assets found!");
+            return;
         }
 
         string getPath = EditorUtility.SaveFolderPanel($"EyesBundles Location", "", "");
