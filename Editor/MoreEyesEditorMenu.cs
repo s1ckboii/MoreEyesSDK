@@ -96,6 +96,8 @@ public class MoreEyesEditorMenu : EditorWindow
             foreach (var prefab in mod.Prefabs)
                 assets.Add(AssetDatabase.GetAssetPath(prefab));
 
+            foreach (string name in assets)
+                Debug.Log($"bundling {name} in mod: {mod.Name}");
 
             bundlebuilds.Add(new AssetBundleBuild()
             {
