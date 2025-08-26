@@ -2,15 +2,24 @@
 Unity editor tools for creating MoreEyes mods for R.E.P.O.
 
 
-## WIP
+## 🚧 Work in Progress
 
-- We'll add some pictures to the github in a folder for easier navigation
-- For now if you want to create your own:
-  - Follow the steps of [R.E.P.O. Project Patcher by Kesomannen](https://github.com/Kesomannen/unity-repo-project-patcher)
-  - Add our package `https://github.com/darmuh/MoreEyesSDK.git` to your unity project
-  - Press on the `+` -> `MoreEyes` -> `˙Mod` in your preferred folder and then fill out this Scriptable Object (SO for short)
-  - Once you are done, at the top of your project (File,Edit,Assets...etc) there is going to be a `More Eyes` button, click on that and then `Package Mods`, select your preferred folder and build it
-  - Once you are done with this, just follow [Thunderstore's instructions](https://thunderstore.io/package/create/docs) and you can also use [Thunderstore's Markdown Preview](https://thunderstore.io/tools/markdown-preview) for your readme and also make sure your manifest has our mod as a dependency
+- Example pictures will be added to the repo soon for easier navigation.
+- For now, you can create your own mod by following the steps below.
+
+## 📦 Setup & Usage
+
+1. Follow the setup guide for [R.E.P.O. Project Patcher by Kesomannen](https://github.com/Kesomannen/unity-repo-project-patcher).
+2. Add this package to your Unity project: `https://github.com/darmuh/MoreEyesSDK.git`
+3. In the Unity editor, press **`+` or `Right Click` inside a folder → MoreEyes → ˙Mod** in your preferred folder.
+4. Fill out the generated **ScriptableObject (SO)** with your mod’s details.
+5. Once ready, at the top of the editor you’ll find a **More Eyes** menu:
+- Click **More Eyes** → **Package Mods**
+- Select your preferred folder
+- Build the package
+6. After building, follow [Thunderstore’s instructions](https://thunderstore.io/package/create/docs) for publishing your mod.
+- You can also preview your README using [Thunderstore’s Markdown Preview](https://thunderstore.io/tools/markdown-preview).
+- Be sure your `manifest.json` lists [our mod](https://thunderstore.io/c/repo/p/s1ckboy/MoreEyes )'s dependency string.
 
 ## Naming convention for prefabs
 
