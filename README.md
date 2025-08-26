@@ -11,6 +11,13 @@ Unity editor tools for creating MoreEyes mods for R.E.P.O.
   - Press on the `+` -> `MoreEyes` -> `˙Mod` in your preferred folder and then fill out this Scriptable Object (SO for short)
   - Once you are done, at the top of your project (File,Edit,Assets...etc) there is going to be a `More Eyes` button, click on that and then `Package Mods`, select your preferred folder and build it
   - Once you are done with this, just follow [Thunderstore's instructions](https://thunderstore.io/package/create/docs) and you can also use [Thunderstore's Markdown Preview](https://thunderstore.io/tools/markdown-preview) for your readme and also make sure your manifest has our mod as a dependency
+
+## Naming convention for prefabs
+
+- `cat_pupil_right`
+- `cat_pupil_left`
+- `cat_iris_right`
+- `cat_iris_left`
  
 ### More info
 
