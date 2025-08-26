@@ -23,11 +23,13 @@ Unity editor tools for creating MoreEyes mods for R.E.P.O.
 
 ## Naming convention for prefabs
 
-- `cat_pupil_right`
-- `cat_pupil_left`
-- `cat_iris_right`
-- `cat_iris_left`
-- _both should also work, but I havent really tested that yet - Darmuh might have, I'll polish out this readme soon
+- Prefab names should follow the pattern: `<name>_<pupil|iris>_<left|right|both>`
+- Example setup for clarity:
+  - `cat_pupil_right`
+  - `cat_pupil_left`
+  - `cat_iris_right`
+  - `cat_iris_left`
+  - `spiral1_pupil_both`
  
 ### More info
 
