@@ -18,6 +18,7 @@ Unity editor tools for creating MoreEyes mods for R.E.P.O.
 - `cat_pupil_left`
 - `cat_iris_right`
 - `cat_iris_left`
+- _both should also work, but I havent really tested that yet - Darmuh might have, I'll polish out this readme soon
  
 ### More info
 
