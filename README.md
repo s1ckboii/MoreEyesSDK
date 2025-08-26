@@ -31,6 +31,8 @@ Unity editor tools for creating MoreEyes mods for R.E.P.O.
   - `cat_iris_left`
   - `spiral1_pupil_both`
  
-### More info
+### ℹ️ More info
 
--  Please if you are uploading a mod give players some basic informations like a list of what it contains, some pictures even `![](imgur or other website's link where you placed your picture)`
+When uploading a mod, please include at minimum:
+- A short list of what it contains
+- A few screenshots of your pupils / irises, for example: `![](https://i.imgur.com/example.png)`
