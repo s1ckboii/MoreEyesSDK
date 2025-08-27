@@ -117,12 +117,11 @@ public class MoreEyesEditorMenu : EditorWindow
                 };
                 root.Add(foldout);
 
-                // Scrollable prefab list
                 ScrollView prefabScroll = new ScrollView
                 {
                     style =
         {
-            maxHeight = 150, // Adjust to taste
+            maxHeight = 150,
             overflow = Overflow.Hidden
         }
                 };
