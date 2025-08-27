@@ -1,6 +1,6 @@
 {
   "name": "com.darmuh.moreeyes-sdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "displayName": "MoreEyesSDK",
   "description": "Unity editor tools for creating MoreEyes mods for R.E.P.O.",
   "unity": "2022.3",
