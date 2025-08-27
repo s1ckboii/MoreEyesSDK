@@ -99,7 +99,6 @@ public class MoreEyesEditorMenu : EditorWindow
             }
 
             List<ModTrackValues> modTracker = new();
-
             foreach (var mod in mods)
             {
                 Label header = new($"{mod.Name}");
@@ -111,11 +110,31 @@ public class MoreEyesEditorMenu : EditorWindow
                 header.style.paddingRight = 1;
                 header.style.paddingTop = 3;
                 root.Add(header);
+
                 Foldout foldout = new()
                 {
                     value = false
                 };
                 root.Add(foldout);
+
+                // Scrollable prefab list
+                ScrollView prefabScroll = new ScrollView
+                {
+                    style =
+        {
+            maxHeight = 150, // Adjust to taste
+            overflow = Overflow.Hidden
+        }
+                };
+
+                foreach (var item in mod.Prefabs)
+                {
+                    prefabScroll.Add(new Label($"{item.name}"));
+                }
+
+                foldout.Add(prefabScroll);
+                foldout.text = $"{mod.Name} Prefab List [{mod.Prefabs.Count}]";
+
                 TextField path = new("Build path", 999, false, false, '*')
                 {
                     tooltip = "Click to set path...",
@@ -130,19 +149,15 @@ public class MoreEyesEditorMenu : EditorWindow
                     Debug.Log($"Selected path {newPath} to build {mod.name} bundle");
                 });
                 root.Add(path);
+
                 Toggle modToggle = new()
                 {
                     value = true,
                     text = "Package Contents",
                 };
                 root.Add(modToggle);
-                modTracker.Add(new ModTrackValues(mod, path, modToggle));
 
-                foreach (var item in mod.Prefabs)
-                {
-                    foldout.Add(new Label($"{item.name}"));
-                    foldout.text = $"{mod.Name} Prefab List [{mod.Prefabs.Count}]";
-                }
+                modTracker.Add(new ModTrackValues(mod, path, modToggle));
 
                 root.Add(HorizontalLine());
             }
